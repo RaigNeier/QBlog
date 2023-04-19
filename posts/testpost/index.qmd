@@ -1,0 +1,9 @@
+---
+title: "Test Post"
+author: "Peter Remyga"
+date: "2023-04-18"
+categories: [test]
+image: "image.jpg"
+---
+
+This is a test post.

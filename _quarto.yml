@@ -11,6 +11,21 @@ website:
         href: https://github.com/raigneier
       - icon: twitter
         href: https://twitter.com
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Basics"
+        contents:
+          - about.qmd
+          - somepage.qmd
+      - section: "Layout"
+        contents:
+          - about.qmd
+          - somepage.qmd
+
+
+  
 format:
   html:
     theme: cosmo
