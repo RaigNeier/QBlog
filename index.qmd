@@ -1,5 +1,5 @@
 ---
-title: "QBlog"
+title: "GameDev Blog"
 listing:
   contents: posts
   sort: "date desc"

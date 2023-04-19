@@ -1,6 +1,6 @@
 ---
 title: "Welcome To My Blog"
-author: "Tristan O'Malley"
+author: "Peter Remyga"
 date: "2023-04-15"
 categories: [news]
 ---
