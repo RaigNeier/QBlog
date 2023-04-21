@@ -1,0 +1,20 @@
+---
+title: "Arkanoid Series 02 : Setup and Tools"
+author: "Peter Remyga"
+date: "2023-04-16"
+categories: [Arkanoid]
+---
+
+Setting up environment and installing tools.
+
+Firstly you need download Visual Studio Community 2022.
+[Download Visual Studio >>> ](https://visualstudio.microsoft.com/vs/community)
+![](vs.png)
+
+By a link you should get a VisualStudioSetup.exe installer.
+Installation is very simple i will not cover it here. When you reach component selection the only thing we need is to select .NET desktop development component:
+
+![](setup.png){fig-align="center"}
+
+
+[Next Tutorial : Creating a Project in Visual Studio](\posts\Arkanoid\03)

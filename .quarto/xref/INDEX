@@ -16,5 +16,29 @@
   },
   "somepage.qmd": {
     "somepage.html": "b4479578"
+  },
+  "posts/00_Welcome/index.qmd": {
+    "index.html": "47e8afed"
+  },
+  "posts/01_Introduction/index.qmd": {
+    "index.html": "96dfb6b8"
+  },
+  "posts/Arcanoid/01/index.qmd": {
+    "index.html": "8d6ee10a"
+  },
+  "posts/Arcanoid/02/index.qmd": {
+    "index.html": "b2be2aa5"
+  },
+  "posts/Arkanoid/02/index.qmd": {
+    "index.html": "69e0ec17"
+  },
+  "posts/Arkanoid/01/index.qmd": {
+    "index.html": "0a94aeff"
+  },
+  "posts/news/00/index.qmd": {
+    "index.html": "d30c44e8"
+  },
+  "posts/Arkanoid/03/index.qmd": {
+    "index.html": "bcdcdc53"
   }
 }

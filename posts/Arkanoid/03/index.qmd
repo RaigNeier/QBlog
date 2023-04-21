@@ -1,0 +1,21 @@
+---
+title: "Arkanoid Series 03 : Creating a project in Visual Studio"
+author: "Peter Remyga"
+date: "2023-04-16"
+categories: [Arkanoid]
+---
+
+Creating a project for a game.
+
+ * Steps
+
+    - Launch Visual Studio 
+    - Select Create new Project. 
+    - Select Windows Forms App Template.![](cr_proj.png){fig-align="center"}
+
+    - Fell free to give it a name you like, this your game.
+    - Finish project creation keeping everything else as default options.
+
+    
+
+[Next Tutorial : Setup and Tools](\posts\Arkanoid\02)

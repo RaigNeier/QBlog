@@ -4,41 +4,41 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "About Author\nHello, my name is Peter aka Raig Neier. For as long as I can remember, I have always been fascinated by electronics. It’s like some kind of magic that once built work by itself. But most of all I enjoyed programming it and especially the games.\nMy interest was first piqued by a Nintendo game console that I borrowed from a friend for a few months when he moved to another city. Sometimes I think what is so special about Super Mario? But as the first game in my life after TETRIS, it made an indelible impression on me. Then it was SEGA, then the computer and the first book on Turbo Pascal.\nI’ve always been fascinated by how in games the story came to life and moved, but you could also influence it. It turned out to be much more interesting than reading or watching movies. And now I’m stuck for life trying to figure out how to learn this magic=)"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "GameDev Blog",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nApr 18, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nTest Post\n\n\n\n\n\n\n\ntest\n\n\n\n\n\n\n\n\n\n\n\nApr 18, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nApr 15, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\nNo matching items"
+    "text": "Arkanoid Series 01 : Introduction\n\n\n\n\n\n\n\nArkanoid\n\n\n\n\n\n\n\n\n\n\n\nApr 16, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\n  \n\n\n\n\nArkanoid Series 02 : Setup and Tools\n\n\n\n\n\n\n\nArkanoid\n\n\n\n\n\n\n\n\n\n\n\nApr 16, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\n  \n\n\n\n\nArkanoid Series 03 : Creating a project in Visual Studio\n\n\n\n\n\n\n\nArkanoid\n\n\n\n\n\n\n\n\n\n\n\nApr 16, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nApr 15, 2023\n\n\nPeter Remyga\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/Arkanoid/01/index.html",
+    "href": "posts/Arkanoid/01/index.html",
+    "title": "Arkanoid Series 01 : Introduction",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "Arkanoid Series Introduction.\nThis will be the first tutorial in series where we develop famous game Arkanoid!\nI think every game developer should build its own Arkanoid at least once. This very simple and yet interesting project as your first one that allow you learn the basics and have some fun.\n\nDuring this series you will learn:\n\nhow to setup visual studio\nC# programming, “syntax sugar”\nWindows Forms GDI+ graphics\nuseful classes to build another games and GUI apps on Windows Forms\nhow to use nuget packages\nconcepts of game cycle\nhow to gradually build and imrove your game\nhow to build a level editor\nrapid prototyping\n\n\n\n\n\n\n\nNext Tutorial : Setup and Tools\nOr here is a link to a finished game prototype repository on my GitHub: Arkanoid by Raig Neier"
   },
   {
-    "objectID": "posts/testpost/index.html",
-    "href": "posts/testpost/index.html",
-    "title": "Test Post",
+    "objectID": "posts/Arkanoid/02/index.html",
+    "href": "posts/Arkanoid/02/index.html",
+    "title": "Arkanoid Series 02 : Setup and Tools",
     "section": "",
-    "text": "This is a test post."
+    "text": "Setting up environment and installing tools.\nFirstly you need download Visual Studio Community 2022. Download Visual Studio &gt;&gt;&gt; \nBy a link you should get a VisualStudioSetup.exe installer. Installation is very simple i will not cover it here. When you reach component selection the only thing we need is to select .NET desktop development component:\n\n\n\n\n\nNext Tutorial : Creating a Project in Visual Studio"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
+    "objectID": "posts/Arkanoid/03/index.html",
+    "href": "posts/Arkanoid/03/index.html",
+    "title": "Arkanoid Series 03 : Creating a project in Visual Studio",
+    "section": "",
+    "text": "Creating a project for a game.\n\nSteps\n\nLaunch Visual Studio\nSelect Create new Project.\nSelect Windows Forms App Template.\nFell free to give it a name you like, this your game.\nFinish project creation keeping everything else as default options.\n\n\nNext Tutorial : Setup and Tools"
+  },
+  {
+    "objectID": "posts/news/00/index.html",
+    "href": "posts/news/00/index.html",
     "title": "Welcome To My Blog",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
-    "objectID": "somepage.html",
-    "href": "somepage.html",
-    "title": "About",
-    "section": "",
-    "text": "About this blog"
+    "text": "Welcome to my game development blog!\nIn this blog, I want to share my little experiments in game programming. My goal is do not do it right, but to do it interesting.\nThe methods and tools that I use may seem outdated to some, but there are reasons for this. I value compilation and execution speed, rapid prototyping, convenience and code readability the most. After we were able to convey the general idea, the code can be easily translated into suitable tools for this. But at first those tools can distract from the original idea.\nI will not strive to make the complexity of the lessons consistent, those kind of lessons already exist, but I will use sophisticated methods straight away and explain them.\nI hope you get something useful for yourself.\nConsole.WriteLine(\"Hello and Welcome!\");"
   }
 ]
