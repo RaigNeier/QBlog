@@ -1,0 +1,24 @@
+---
+title: "Welcome To My Blog"
+author: "Peter Remyga"
+date: "2023-04-15"
+categories: [news]
+---
+
+Welcome to my game development blog!
+
+In this blog, I want to share my little experiments in game programming. My goal is do not do it right, but to do it interesting.
+
+The methods and tools that I use may seem outdated to some, but there are reasons for this. I value compilation and execution speed, rapid prototyping, convenience and code readability the most. After we were able to convey the general idea, the code can be easily translated into suitable tools for this. But at first those tools can distract from the original idea.
+
+I will not strive to make the complexity of the lessons consistent, those kind of lessons already exist, but I will use sophisticated methods straight away and explain them.
+
+I hope you get something useful for yourself.
+
+```C#
+Console.WriteLine("Hello and Welcome!");
+```
+
+![](thumbnail.jpg){fig-align="center"}
+
+

@@ -1,6 +1,6 @@
 ---
 title: "About"
-image: profile.jpg
+image: about_image.jpg
 about:
   template: jolla
   links:
@@ -16,4 +16,11 @@ about:
 
 ---
 
-About this blog
+
+About Author
+
+Hello, my name is Peter. For as long as I can remember, I have always been fascinated by electronics. It's like some kind of magic that once built work by itself. But most of all I enjoyed programming it and especially the games.
+
+My interest was first piqued by a Nintendo game console that I borrowed from a friend for a few months when he moved to another city. Sometimes I think what is so special about Super Mario? But as the first game in my life after TETRIS, it made an indelible impression on me. Then it was SEGA, then the computer and the first book on Turbo Pascal. 
+
+I've always been fascinated by how in games the story came to life and moved, but you could also influence it. It turned out to be much more interesting than reading or watching movies. And now I'm stuck for life trying to figure out how to learn this magic=)

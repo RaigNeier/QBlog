@@ -1,0 +1,24 @@
+---
+title: "Arkanoid Series : 01 Introduction"
+author: "Peter Remyga"
+date: "2023-04-21"
+categories: [Arkanoid]
+---
+
+This will be the first tutorial in series where we develop famous game Arkanoid!
+
+I think every game developer should build its own Arkanoid at least once.
+This very simple and yet interesting project as your first one that allow you learn the basics and have some fun.
+
+During this series you will learn:
+ - how to setup visual studio
+ - C# programming, "syntax sugar"
+ - Windows Forms GDI+ graphics
+ - useful classes to build another games and GUI apps on Windows Forms
+ - how to use nuget packages
+ - concepts of game cycle 
+ - how to gradually build and imrove your game
+ - how to build a level editor
+ - rapid prototyping
+
+
