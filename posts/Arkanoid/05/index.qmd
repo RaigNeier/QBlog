@@ -15,4 +15,4 @@ Game Loop Etc.
 
 [Next >> : Game menu](\posts\Arkanoid\06)
 
-[<< Previous : Game menu](\posts\Arkanoid\04)
+[<< Previous : Input handling](\posts\Arkanoid\04)
