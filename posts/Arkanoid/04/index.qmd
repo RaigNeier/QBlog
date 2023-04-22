@@ -5,7 +5,7 @@ date: "2023-04-15"
 categories: [Arkanoid]
 ---
 
-In this tutorial we will create input handling class.
+In this tutorial we will  create input handling class.
 
 ![Pablo Perez Varela/Shutterstock.com](InputPreview.png)
 
