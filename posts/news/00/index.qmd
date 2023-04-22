@@ -19,6 +19,6 @@ I hope you get something useful for yourself.
 Console.WriteLine("Hello and Welcome!");
 ```
 
-![](thumbnail.jpg){fig-align="center"}
+![](thumb.jpg){fig-align="center"}
 
 
