@@ -15,7 +15,7 @@ website:
     style: "docked"
     search: true
     contents:
-      - section: "Basics"
+      - section: "General"
         contents:
           - text: "Welcome"
             file: posts\news\00\index.qmd
@@ -33,8 +33,6 @@ website:
             file: posts\Arkanoid\04\index.qmd
           - text: "Game Loop"
             file: posts\Arkanoid\05\index.qmd
-
-
   
 format:
   html:
