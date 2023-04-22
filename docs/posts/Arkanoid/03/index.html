@@ -9,7 +9,7 @@
 <meta name="author" content="Peter Remyga">
 <meta name="dcterms.date" content="2023-04-16">
 
-<title>GameDev Blog - Arkanoid Series 03 : Creating a project in Visual Studio</title>
+<title>GameDev Blog - Arkanoid Series 03 : Creating a project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -84,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link active" href="../../../about.html" rel="" target="" aria-current="page">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About Author</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/raigneier" rel="" target=""><i class="bi bi-github" role="img">
@@ -107,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/01/index.html">Arkanoid Series</a></li><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/03/index.html">Creating a project in Visual Studio</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/01/index.html">Arkanoid Series</a></li><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/03/index.html">Creating a project</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -120,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Arkanoid Series 03 : Creating a project in Visual Studio</h1>
+      <h1 class="title">Arkanoid Series 03 : Creating a project</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Arkanoid</div>
               </div>
@@ -176,7 +210,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../about.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About author</span></a>
   </div>
 </li>
       </ul>
@@ -205,7 +239,19 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/Arkanoid/03/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Creating a project in Visual Studio</span></a>
+ <span class="menu-text">Creating a project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Input Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Game Loop</span></a>
   </div>
 </li>
       </ul>
@@ -224,16 +270,105 @@ ul.task-list li input[type="checkbox"] {
 
 <p>Creating a project for a game.</p>
 <ul>
-<li><p>Steps</p>
+<li>Steps
 <ul>
-<li><p>Launch Visual Studio</p></li>
-<li><p>Select Create new Project.</p></li>
-<li><p>Select Windows Forms App Template.<img src="cr_proj.png" class="img-fluid" data-fig-align="center"></p></li>
-<li><p>Fell free to give it a name you like, this your game.</p></li>
-<li><p>Finish project creation keeping everything else as default options.</p></li>
+<li>Launch Visual Studio</li>
+<li>Select Create new Project.</li>
+<li>Select Windows Forms App Template.<img src="cr_proj.png" class="img-fluid" data-fig-align="center"></li>
+<li>Fell free to give it a name you like, this your game.</li>
+<li>Finish project creation keeping everything else as default options.</li>
 </ul></li>
 </ul>
-<p><a href="\posts\Arkanoid\02">Next Tutorial : Setup and Tools</a></p>
+<p>After you project is created. We need to install a NuGet package to easily work with JSON fles We will use them to store our settings and levels:</p>
+<ul>
+<li>To install this NuGet Package:
+<ul>
+<li>on the top menu strip select Project -&gt; Manage NuGet Packages</li>
+<li>then to the Browse Tab.(You should have internet connection to install NuGet)</li>
+<li>search for package Newtonsoft.Json and install it</li>
+</ul></li>
+<li>Next thing we gonna need is to set some basic settings
+<ul>
+<li>There should be “Form1” form created by default, change its name to something like <code>GameWindow</code></li>
+<li>Create new class a call it <code>GameWindow_Logic</code>, we will separate basic window code and our actual game code from the start to remove the distractions.</li>
+<li>Next copy all the code from our <code>GameWindow</code> and using it replace everything in the <code>GameWindow_Logic</code>. After that remove <code>GameWindow</code> class contents inside <code>GameWindow_Logic</code> file. C# allow to split one class between several files if it has <code>partial</code> modifier in its definition. And when form is created by visual studio it has partial modifier by default.</li>
+<li>in the GameWindow after initialize component add : “<code>this.DoubleBuffered = true;</code>”. Cause in games we need redraw screen very often. If this process happens on the screen does not matter how quick it is flickering is inevitable. This option enable form to use second buffer to paint content and swap with the first one. That way actual drawing process is invisible to the user and there will be no flickering.</li>
+<li>at last add another form and call it <code>LevelEditorForm</code></li>
+</ul></li>
+</ul>
+<p>You shoud end up with something like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GameWindow.cs file content</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">partial</span> <span class="kw">class</span> GameWindow<span class="op">:</span> Form <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">GameWindow</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">InitializeComponent</span><span class="op">();</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">DoubleBuffered</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// this will remove flickering</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">// GameWindow_Logic.cs file content</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game <span class="op">{</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">partial</span> <span class="kw">class</span> GameWindow<span class="op">:</span> Form <span class="op">{</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">// LevelEditorWindow.cs file content</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game <span class="op">{</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">partial</span> <span class="kw">class</span> LevelEditorWindow<span class="op">:</span> Form <span class="op">{</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">LevelEditorWindow</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">InitializeComponent</span><span class="op">();</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you can see we will be implementing level editor for our game in the same project just as a separate window. That way we can share same file system between two separate modules and easily switch between them.</p>
+<p>After we finish the basics I will show you more complex ways to organize files and make application integration.</p>
+<hr>
+<p>Here is GameDev advice: during rapid prototyping and early stages of development use simplest and quickest ways to make you program running and dont allow the mundane “right ways” stuck in your “creativity wheel” on each step you<br>
+take or you will be tired very quickly.</p>
+<hr>
+<p>Okay. About mundane tasks…</p>
+<p>Next thing we need to create a directory structure and add default image of the ball and paddle we will usein our game.</p>
+<p>Lets create a resources file structure for our game. Look at this picture as a reference and create folders on top level of the project:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fs1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>But when our game or level editor will be searhing for Data folder, it did not find it in output folder of compilied project since they are on the top level of our project. Some developers after they adding some image they go to its the properties and set option: <code>Copy if newer</code>. But imagine if we constantly creating new levels or adding new resources during development? I certain that will be very quickly annoyed by this not to mention you will keep forgetting about this and would be wondering why your game cant find some resource… So, instead let’s just add this line: “<code>string ResPath = "..\\..\\..\\Data\\";</code>” to the main classes in <code>GameWindow</code> and <code>LevelEditorWindow</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GameWindow.cs file content</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">partial</span> <span class="kw">class</span> GameWindow<span class="op">:</span> Form <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> ResPath <span class="op">=</span> <span class="st">"..</span><span class="sc">\\</span><span class="st">..</span><span class="sc">\\</span><span class="st">..</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">GameWindow</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">InitializeComponent</span><span class="op">();</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">DoubleBuffered</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// this will remove flickering</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">// LevelEditorWindow.cs file content</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game <span class="op">{</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">partial</span> <span class="kw">class</span> LevelEditorWindow<span class="op">:</span> Form <span class="op">{</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> ResPath <span class="op">=</span> <span class="st">"..</span><span class="sc">\\</span><span class="st">..</span><span class="sc">\\</span><span class="st">..</span><span class="sc">\\</span><span class="st">Data</span><span class="sc">\\</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">LevelEditorWindow</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">InitializeComponent</span><span class="op">();</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In windows evironment when path contains double dots “..” that means go back one level to the root folder. So if we know what that program output folder deep and out Data folder inside Arkanoid folder three levels higher:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fs2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>We dont need to know know their name, we just use this : “..\..\..\”.</p>
+<p>To proceed to the the most interesting part we need to create one very useful and universal class which WindowsForms lacks. So in next tutorial we will create useful Input wrapper for WindowsForms Control class:</p>
+<p><a href="\posts\Arkanoid\04">Next &gt;&gt; : Input Handler</a></p>
+<p><a href="\posts\Arkanoid\02">&lt;&lt; Previous : Setup and Tools</a></p>
 
 
 

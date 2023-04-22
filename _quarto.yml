@@ -19,7 +19,7 @@ website:
         contents:
           - text: "Welcome"
             file: posts\news\00\index.qmd
-          - text: "About"
+          - text: "About author"
             file: about.qmd
       - section: "Arkanoid Series"
         contents:
@@ -27,9 +27,12 @@ website:
             file: posts\Arkanoid\01\index.qmd
           - text: "Setup and Tools"
             file: posts\Arkanoid\02\index.qmd
-          - text: "Creating a project in Visual Studio"
+          - text: "Creating a project"
             file: posts\Arkanoid\03\index.qmd
-
+          - text: "Input Handling"
+            file: posts\Arkanoid\04\index.qmd
+          - text: "Game Loop"
+            file: posts\Arkanoid\05\index.qmd
 
 
   

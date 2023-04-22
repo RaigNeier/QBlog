@@ -23,10 +23,10 @@ This very simple and yet interesting project as your first one that allow you le
     - how to build a level editor
     - rapid prototyping
 
-![](ArcanoidPreview01.png){fig-align="center"}
-
-
-[Next Tutorial : Setup and Tools](\posts\Arkanoid\02)
+![](game.png){fig-align="center"}
+![](level_editor.png){fig-align="center"}
 
 Or here is a link to a finished game prototype repository on my GitHub:
-[Arkanoid by Raig Neier](\posts\Arkanoid\02)
+[Arkanoid by Raig Neier](https://github.com/RaigNeier/Arkanoid)
+
+[Next >> : Setup and Tools](\posts\Arkanoid\02)

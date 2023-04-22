@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.330">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Peter Remyga">
+<meta name="dcterms.date" content="2023-04-16">
+
+<title>GameDev Blog - Arkanoid Series 04 : Input Handling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">GameDev Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../about.html" rel="" target="" aria-current="page">
+ <span class="menu-text">About Author</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/raigneier" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/01/index.html">Arkanoid Series</a></li><li class="breadcrumb-item"><a href="../../../posts/Arkanoid/04/index.html">Input Handling</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Arkanoid Series 04 : Input Handling</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Arkanoid</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Peter Remyga </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 16, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/news/00/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Arkanoid Series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setup and Tools</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating a project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/04/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Input Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/Arkanoid/05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Game Loop</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>In this tutorial we will create input handling class.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="InputPreview.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pablo Perez Varela/Shutterstock.com</figcaption><p></p>
+</figure>
+</div>
+<p>Since this class is quite universal, may seem sophisticated at first and working whole for sole purpose, I will not use bullet points here. We will go through each step of its creation gradually to have a deep understanding.</p>
+<p>First, create new class named <code>InputHandler</code> and move it into <code>Classes</code> folder. Since we not making a lib don’t update namespace when you asked through popup dialog, that will only get in the way. Or if you create your class inside <code>Classes</code> folder remove <code>Classes</code> from namespace name.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">namespace</span> Game<span class="op">.</span><span class="fu">Classes</span> <span class="op">{}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Every WindowsForms visual component including <code>Form</code> has <code>Control</code> in its base class.</p>
+<p><code>InputHandler</code> is class works as a wrapper around any <code>Control</code> class descendant collecting its data. Create a var type of <code>Control</code> with name <code>baseControl</code>. And update constructor to get this base control and assign it to local variable :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> InputHandler <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> Control baseControl<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">InputHandler</span><span class="op">(</span>Control _control<span class="op">){</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            baseControl <span class="op">=</span> _control<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Next part</p>
+<p>We need a way to store currently pressed keyboard and mouse keys. Create several lists for storing keys. We using <code>List</code> since it very easy to add and remove items and check for existing keys. Also wheel position and mouse cursor location in side <code>Control</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>        <span class="co">//lists to store:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> List<span class="op">&lt;</span>Keys<span class="op">&gt;</span> curKeysDown <span class="op">=</span> <span class="kw">new</span> <span class="op">();</span> <span class="co">// keyboard keys</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;</span> curMouseBtnDown <span class="op">=</span> <span class="kw">new</span><span class="op">();</span> <span class="co">// mouse keys</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">int</span> curWheelDelta <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> <span class="co">// current mouse wheel position</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PointF curMouseLocation <span class="op">=</span> <span class="kw">new</span> <span class="op">();</span> <span class="co">// and cursor position</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Syntax sugar tip:</p>
+<p>You may notice or may not but there was some changes in C#. Before you have to write a full instance creation specifying type:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    List<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> listOfInt <span class="op">=</span> <span class="kw">new</span> List<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But in new standard you can omit a type and just write like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    List<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> listOfInt <span class="op">=</span> <span class="kw">new</span><span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Before we move on we need another class to store this input data as snapshot. Game works differently from destkop application. Usually game has a loop that unpdating every 30 or 60 times per second and sometimes even higher.</p>
+<p>Games are fastpace and constantly changing software that have to quickly respond to player input that unpredictable, so we need to make calculations and render everything from scratch every frame to make player experience as smooth as posssible.</p>
+<ul>
+<li>Usually we have two methods called each frame:
+<ul>
+<li>Update Frame -&gt; method where calculation happening</li>
+<li>Draw Frame -&gt; method where draw everything based on calculations</li>
+</ul></li>
+</ul>
+<p>Event based system used by Windows forms to handling user input is another unpredictable variable that working good in static UI’s, but no use in games. We can’t predict when event happens. To adress this we created list to store current input data, so it doesnt interfere with our stable Game Loop. And can be accessed when its needed instead. Even with all of this talking about speed and rsponsiveness this is may seem contradicting cause there are some latency when we check input only when we need. But this “need” happens so often in game loop so there are almost no noticeable latency.</p>
+<p>But what if you want to know when key is pressed or released? Just now in this frame or already for some time?</p>
+<p>This is why need another class to store input data snapshots from frame to frame. Create a class <code>InputState</code> inside same file or new, it does not matter since it used by a <code>InputHandler</code>. You can even put its implementation at the top of <code>InputHandler</code>.</p>
+<ul>
+<li><p>in this class we creating:</p>
+<ul>
+<li>same variables to store snapshot of InputHandler input data.</li>
+<li>two constructors:
+<ul>
+<li>one as default empty state, when the game starts</li>
+<li>another to make a snapshot but throwing InputHadler data as is</li>
+</ul></li>
+<li>GetCopy() method. That makes a new instance of InputState, using this class input data. We need this cause when we assing class instance to another class instance its just assign reference not a copy. And if something is gonna happen with a original object same happens with this instance we assigned it to. I will show where it may happen later</li>
+</ul>
+<p>At last <code>low-level</code> data retrievers, that are used only by another functions of InputHandler.</p>
+<ul>
+<li>two functions that returning if key is pressed in current state
+<ul>
+<li>for mouse buttons <code>IsMouseDown()</code></li>
+<li>for keyboard keys <code>IsKeyDown()</code></li>
+</ul></li>
+<li>and two getters
+<ul>
+<li>mouse cursor location</li>
+<li>mouse wheel postition</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Look at what we have, there is nothing sophisticated just copy it as is:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> InputState <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PointF mouseLocation <span class="op">=</span> <span class="kw">new</span> <span class="op">();</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> List<span class="op">&lt;</span>Keys<span class="op">&gt;</span> keysDownList <span class="op">=</span> <span class="kw">new</span> <span class="op">();</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;</span> mouseBtnDownList <span class="op">=</span> <span class="kw">new</span> <span class="op">();</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">int</span> wheelPosition <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">InputState</span><span class="op">()</span> <span class="op">{</span> <span class="op">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">InputState</span><span class="op">(</span>List<span class="op">&lt;</span>Keys<span class="op">&gt;</span> _keysDownList<span class="op">,</span> List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;</span> _mouseBtnDownList<span class="op">,</span> PointF _mousePosition<span class="op">,</span> <span class="dt">int</span> _wheelPosition<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            keysDownList <span class="op">=</span> _keysDownList<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            mouseBtnDownList <span class="op">=</span> _mouseBtnDownList<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            mouseLocation <span class="op">=</span> _mousePosition<span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            wheelPosition <span class="op">=</span> _wheelPosition<span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> InputState <span class="fu">GetCopy</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            List<span class="op">&lt;</span>Keys<span class="op">&gt;</span> copyKeysDownList <span class="op">=</span> <span class="kw">new</span> List<span class="op">&lt;</span>Keys<span class="op">&gt;(</span>keysDownList<span class="op">.</span><span class="fu">ToArray</span><span class="op">());</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;</span> copyMouseBtnDownList <span class="op">=</span> <span class="kw">new</span> List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;(</span>mouseBtnDownList<span class="op">.</span><span class="fu">ToArray</span><span class="op">());</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            PointF copyLocation <span class="op">=</span> <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>mouseLocation<span class="op">.</span><span class="fu">X</span><span class="op">,</span> mouseLocation<span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="kw">new</span> <span class="fu">InputState</span><span class="op">(</span>copyKeysDownList<span class="op">,</span> copyMouseBtnDownList<span class="op">,</span> copyLocation<span class="op">,</span> wheelPosition<span class="op">);</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsMouseDown</span><span class="op">(</span>MouseButtons gMouseButtons<span class="op">)</span> <span class="op">=&gt;</span> </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            mouseBtnDownList<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>gMouseButtons<span class="op">);</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsKeyDown</span><span class="op">(</span>Keys gKeys<span class="op">)</span> <span class="op">=&gt;</span> </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            keysDownList<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>gKeys<span class="op">);</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PointF Location <span class="op">=&gt;</span> mouseLocation<span class="op">;</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> WheelPosition <span class="op">=&gt;</span> wheelPosition<span class="op">;</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>First some syntax sugar tips from this code: In a new stadard instead of the:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> PointF Location <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">get</span> <span class="op">{</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> mouseLocation<span class="op">;</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">set</span> <span class="op">{</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            mouseLocation <span class="op">=</span> value<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can use <code>=&gt;</code> sign:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> PointF Location <span class="op">=&gt;</span> mouseLocation<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Same goes for methods:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> PointF <span class="fu">OffsetLocation</span><span class="op">(</span>PointF offset<span class="op">)</span> <span class="op">=&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span><span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>mouseLocation<span class="op">.</span><span class="fu">X</span> <span class="op">+</span> offset<span class="op">.</span><span class="fu">X</span><span class="op">,</span> mouseLocation<span class="op">.</span><span class="fu">Y</span> <span class="op">+</span> offset<span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>And back to our InputHandler method, after we created InputState class we can start building it.</p>
+<p>Create a states for previous and current frame. Add this to your variables:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>        <span class="co">// states that used to make snapshot of input data each frame</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> InputState currentState <span class="op">=</span> <span class="kw">new</span><span class="op">();</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> InputState previousState <span class="op">=</span> <span class="kw">new</span><span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Create a timer variable. Its used it to simulate update loop.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>        <span class="co">// in .NET there are two timers so need to specify </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// that we want WindowsForms timer</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> System<span class="op">.</span><span class="fu">Windows</span><span class="op">.</span><span class="fu">Forms</span><span class="op">.</span><span class="fu">Timer</span> updateTimer <span class="op">=</span> <span class="kw">new</span><span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Please keep in mind that WindowsForms timer component not the most quick and precise. There are custom timers all over the internet if really need them. But there is no point in creating some real game project using windows forms and gdi, better to use some game engine software. But for this project its enough. Main reason i showing this in Windows Forms because its very useful to prototype some ideas not a real battle projects.</p>
+</div>
+</div>
+<p>Expose timer Interval and start/stop methods to the external classes. With interval we can control game speed and start/stop used to pause a loop in some cases you will see later.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> UpdateInterval <span class="op">=&gt;</span> updateTimer<span class="op">.</span><span class="fu">Interval</span><span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">StartUpdateLoop</span><span class="op">()</span> <span class="op">=&gt;</span> updateTimer<span class="op">.</span><span class="fu">Start</span><span class="op">();</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">StopUpdateLoop</span><span class="op">()</span> <span class="op">=&gt;</span> updateTimer<span class="op">.</span><span class="fu">Stop</span><span class="op">();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Last thing we need are custom events:
+<ul>
+<li>UpdateFrame()</li>
+<li>DrawFrame()</li>
+</ul></li>
+</ul>
+<p>This events should give access to instance of InputHandler that generate then and GDI+ Graphics of the current frame of the current control InputHandler are wrapping around. That way game itself doesnt know anything of the underlying controls it just have access current live data.</p>
+<p>Because of that we need to create a custom EventHandler delegate, after that we can use it to create events:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="kw">delegate</span> <span class="dt">void</span> <span class="fu">FrameEventHadler</span><span class="op">(</span>InputHandler input<span class="op">,</span> Graphics g<span class="op">);</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="kw">event</span> FrameEventHadler UpdateFrame<span class="op">;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="kw">event</span> FrameEventHadler DrawFrame<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finishing the constructor.</p>
+<p>Add event handlers for input events of out <code>baseControl</code> control. Since code in each block is very short. Lets keep things concise and using another sytax sugar like inline event handlers. Especially if I pretty sure that almost never gonna change here anything.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">MouseMove</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> MouseEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                <span class="dt">var</span> mp <span class="op">=</span> baseControl<span class="op">.</span><span class="fu">PointToClient</span><span class="op">(</span>Control<span class="op">.</span><span class="fu">MousePosition</span><span class="op">);</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                curMouseLocation <span class="op">=</span> <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>mp<span class="op">.</span><span class="fu">X</span><span class="op">,</span> mp<span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">MouseDown</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> MouseEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                <span class="dt">var</span> mp <span class="op">=</span> baseControl<span class="op">.</span><span class="fu">PointToClient</span><span class="op">(</span>Control<span class="op">.</span><span class="fu">MousePosition</span><span class="op">);</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                curMouseLocation <span class="op">=</span> <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>mp<span class="op">.</span><span class="fu">X</span><span class="op">,</span> mp<span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(!</span>curMouseBtnDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>e<span class="op">.</span><span class="fu">Button</span><span class="op">))</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                    curMouseBtnDown<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>e<span class="op">.</span><span class="fu">Button</span><span class="op">);</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">MouseUp</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> MouseEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                <span class="dt">var</span> mp <span class="op">=</span> baseControl<span class="op">.</span><span class="fu">PointToClient</span><span class="op">(</span>Control<span class="op">.</span><span class="fu">MousePosition</span><span class="op">);</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                curMouseLocation <span class="op">=</span> <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>mp<span class="op">.</span><span class="fu">X</span><span class="op">,</span> mp<span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>curMouseBtnDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>e<span class="op">.</span><span class="fu">Button</span><span class="op">))</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>                    curMouseBtnDown<span class="op">.</span><span class="fu">Remove</span><span class="op">(</span>e<span class="op">.</span><span class="fu">Button</span><span class="op">);</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">MouseWheel</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> MouseEventArgs e<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                curWheelDelta <span class="op">+=</span> Math<span class="op">.</span><span class="fu">Sign</span><span class="op">(</span>e<span class="op">.</span><span class="fu">Delta</span><span class="op">);</span> </span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">KeyDown</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> KeyEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(!</span>curKeysDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>e<span class="op">.</span><span class="fu">KeyCode</span><span class="op">))</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                    curKeysDown<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>e<span class="op">.</span><span class="fu">KeyCode</span><span class="op">);</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>e<span class="op">.</span><span class="fu">Alt</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>curKeysDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>Keys<span class="op">.</span><span class="fu">Alt</span><span class="op">))</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>                    curKeysDown<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>Keys<span class="op">.</span><span class="fu">Alt</span><span class="op">);</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">KeyUp</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> KeyEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>curKeysDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>e<span class="op">.</span><span class="fu">KeyCode</span><span class="op">))</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                    curKeysDown<span class="op">.</span><span class="fu">Remove</span><span class="op">(</span>e<span class="op">.</span><span class="fu">KeyCode</span><span class="op">);</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(!</span>e<span class="op">.</span><span class="fu">Alt</span> <span class="op">&amp;&amp;</span> curKeysDown<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>Keys<span class="op">.</span><span class="fu">Alt</span><span class="op">))</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>                    curKeysDown<span class="op">.</span><span class="fu">Remove</span><span class="op">(</span>Keys<span class="op">.</span><span class="fu">Alt</span><span class="op">);</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>            baseControl<span class="op">.</span><span class="fu">PreviewKeyDown</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> PreviewKeyDownEventArgs e<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>                e<span class="op">.</span><span class="fu">IsInputKey</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you can see basically we input event hapens we just storing its value, adding pressed keys or removing keys that are not pressed anymore from the list. Maybe except the last one that just allow us to catch special keys, cause we need to catch all the keys and then decide depending on the task do we really need them or not.</p>
+<ul>
+<li>what’s left is:
+<ul>
+<li>prevent from losing focus, cause Windows Forms really like this</li>
+<li>set timer to lowest possible interval of 1 millisecond, later I will cover how limit and make framerate more stable</li>
+<li>on timer tick we force control to repaint itself</li>
+<li>on paint event:
+<ul>
+<li>we need to save state from the last frame as previousState var, and create new InputState for currentState var but here is the problem we talked about if just directly assign <code>previousState = currentState;</code> we dont get a copy of current state we get reference to it. And what is gonna happen when we create a new state for currentState, previousState will have same content. This is why we using method InputState.GetCopy()</li>
+<li>and here is where our main game loop events are invoked, “?” sign after “.” means that events will be invoked only if they have subscribers.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>      <span class="co">// set focus to a form if mouse inside the window</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>      baseControl<span class="op">.</span><span class="fu">MouseEnter</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> EventArgs e<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>          baseControl<span class="op">.</span><span class="fu">Focus</span><span class="op">();</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">};</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">// set timer interval to 1ms this will give as maximum frame rate</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      updateTimer<span class="op">.</span><span class="fu">Interval</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// on Timer Tick we call form to redraw ins contents</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      updateTimer<span class="op">.</span><span class="fu">Tick</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">{</span> baseControl<span class="op">.</span><span class="fu">Invalidate</span><span class="op">();</span> <span class="op">};</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>      <span class="co">// on paint we get only graphics and send it to main function</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>      baseControl<span class="op">.</span><span class="fu">Paint</span> <span class="op">+=</span> <span class="kw">delegate</span> <span class="op">(</span><span class="dt">object</span> sender<span class="op">,</span> PaintEventArgs e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>          <span class="co">// store last input state as previous</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>          previousState <span class="op">=</span> currentState<span class="op">.</span><span class="fu">GetCopy</span><span class="op">();</span> </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>           <span class="co">// and create new input state out of current input data</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>          currentState <span class="op">=</span> <span class="kw">new</span> <span class="fu">InputState</span><span class="op">(</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>              <span class="kw">new</span> List<span class="op">&lt;</span>Keys<span class="op">&gt;(</span>curKeysDown<span class="op">.</span><span class="fu">ToArray</span><span class="op">()),</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>              <span class="kw">new</span> List<span class="op">&lt;</span>MouseButtons<span class="op">&gt;(</span>curMouseBtnDown<span class="op">.</span><span class="fu">ToArray</span><span class="op">()),</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>              <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span>curMouseLocation<span class="op">.</span><span class="fu">X</span><span class="op">,</span> curMouseLocation<span class="op">.</span><span class="fu">Y</span><span class="op">),</span> curWheelDelta</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>          <span class="op">);</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>          <span class="co">// at last invoke game loop events</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>          UpdateFrame<span class="op">?.</span><span class="fu">Invoke</span><span class="op">(</span><span class="kw">this</span><span class="op">,</span> e<span class="op">.</span><span class="fu">Graphics</span><span class="op">);</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>          DrawFrame<span class="op">?.</span><span class="fu">Invoke</span><span class="op">(</span><span class="kw">this</span><span class="op">,</span> e<span class="op">.</span><span class="fu">Graphics</span><span class="op">);</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>      <span class="op">};</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul></li>
+</ul>
+<p>Now we reached the most important part, create properties and methods to get the all the information we need.</p>
+<p>Properties:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PointF MouseLocationCurrent <span class="op">=&gt;</span> currentState<span class="op">.</span><span class="fu">Location</span><span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PointF MouseLocationPrevious <span class="op">=&gt;</span> previousState<span class="op">.</span><span class="fu">Location</span><span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PointF MouseOffset <span class="op">=&gt;</span> <span class="kw">new</span> <span class="fu">PointF</span><span class="op">(</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            currentState<span class="op">.</span><span class="fu">Location</span><span class="op">.</span><span class="fu">X</span> <span class="op">-</span> previousState<span class="op">.</span><span class="fu">Location</span><span class="op">.</span><span class="fu">X</span><span class="op">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            currentState<span class="op">.</span><span class="fu">Location</span><span class="op">.</span><span class="fu">Y</span> <span class="op">-</span> previousState<span class="op">.</span><span class="fu">Location</span><span class="op">.</span><span class="fu">Y</span><span class="op">);</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> WheelDelta <span class="op">=&gt;</span> currentState<span class="op">.</span><span class="fu">WheelPosition</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">int</span> WheelDeltaOffset <span class="op">=&gt;</span> currentState<span class="op">.</span><span class="fu">WheelPosition</span> <span class="op">-</span> previousState<span class="op">.</span><span class="fu">WheelPosition</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>MouseOffset is the most important just add it to any object position you want to move with a mouse and here you have smooth drag functionality.</p>
+<p>Methods:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c# code-with-copy"><code class="sourceCode cs"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsKeyDown</span><span class="op">(</span>Keys key<span class="op">)</span> <span class="op">=&gt;</span> currentState<span class="op">.</span><span class="fu">IsKeyDown</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsMouseDown</span><span class="op">(</span>MouseButtons mb<span class="op">)</span> <span class="op">=&gt;</span> currentState<span class="op">.</span><span class="fu">IsMouseDown</span><span class="op">(</span>mb<span class="op">);</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsJustMouseButtonPressed</span><span class="op">(</span>MouseButtons mouseButton<span class="op">)</span> <span class="op">=&gt;</span>       </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            currentState<span class="op">.</span><span class="fu">IsMouseDown</span><span class="op">(</span>mouseButton<span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">!</span>previousState<span class="op">.</span><span class="fu">IsMouseDown</span><span class="op">(</span>mouseButton<span class="op">);</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsJustMouseButtonReleased</span><span class="op">(</span>MouseButtons mouseButton<span class="op">)</span> <span class="op">=&gt;</span>     </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">!</span>currentState<span class="op">.</span><span class="fu">IsMouseDown</span><span class="op">(</span>mouseButton<span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>            previousState<span class="op">.</span><span class="fu">IsMouseDown</span><span class="op">(</span>mouseButton<span class="op">);</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsJustKeyPressed</span><span class="op">(</span>Keys key<span class="op">)</span> <span class="op">=&gt;</span> </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">(</span>currentState<span class="op">.</span><span class="fu">IsKeyDown</span><span class="op">(</span>key<span class="op">)</span> <span class="op">&amp;&amp;</span> </span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">!</span>previousState<span class="op">.</span><span class="fu">IsKeyDown</span><span class="op">(</span>key<span class="op">));</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">bool</span> <span class="fu">IsJustKeyReleased</span><span class="op">(</span>Keys key<span class="op">)</span> <span class="op">=&gt;</span> </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>            <span class="op">(!</span>currentState<span class="op">.</span><span class="fu">IsKeyDown</span><span class="op">(</span>key<span class="op">)</span> <span class="op">&amp;&amp;</span> </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>            previousState<span class="op">.</span><span class="fu">IsKeyDown</span><span class="op">(</span>key<span class="op">));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There is nothing sophisticated. If key was pressed in previous state but not in this state, here you have it, just released! Immediate Response in 1 frame / 60 frames / 1 sec!</p>
+<p>That was quite a big tutorial. But undestanding of how this class works is vital before using it.</p>
+<p>In the next tutorial I will cover Game Loop concept.</p>
+<p><a href="\posts\Arkanoid\05">Next &gt;&gt; : Game Loop</a></p>
+<p><a href="\posts\Arkanoid\03">&lt;&lt; Previous : Creating a Project</a></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

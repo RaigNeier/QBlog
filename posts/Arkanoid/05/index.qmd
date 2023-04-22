@@ -1,0 +1,18 @@
+---
+title: "Arkanoid Series 05 : Game Loop"
+author: "Peter Remyga"
+date: "2023-04-16"
+categories: [Arkanoid]
+---
+
+
+Game Loop Etc.
+
+![https://gameprogrammingpatterns.com/game-loop.html](GameLoop.png)
+
+
+
+
+[Next >> : Game menu](\posts\Arkanoid\06)
+
+[<< Previous : Game menu](\posts\Arkanoid\04)
