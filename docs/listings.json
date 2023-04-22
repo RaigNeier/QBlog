@@ -2,11 +2,11 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/Arkanoid/01/index.html",
-      "/posts/Arkanoid/02/index.html",
-      "/posts/Arkanoid/03/index.html",
-      "/posts/Arkanoid/04/index.html",
       "/posts/Arkanoid/05/index.html",
+      "/posts/Arkanoid/04/index.html",
+      "/posts/Arkanoid/03/index.html",
+      "/posts/Arkanoid/02/index.html",
+      "/posts/Arkanoid/01/index.html",
       "/posts/news/00/index.html"
     ]
   }

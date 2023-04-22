@@ -1,7 +1,7 @@
 ---
 title: "Arkanoid Series 01 : Introduction"
 author: "Peter Remyga"
-date: "2023-04-16"
+date: "2023-04-12"
 categories: [Arkanoid]
 ---
 
@@ -18,7 +18,7 @@ This very simple and yet interesting project as your first one that allow you le
     - Windows Forms GDI+ graphics
     - useful classes to build another games and GUI apps on Windows Forms
     - how to use nuget packages
-    - concepts of game cycle 
+    - concept of Game Loop
     - how to gradually build and imrove your game
     - how to build a level editor
     - rapid prototyping
